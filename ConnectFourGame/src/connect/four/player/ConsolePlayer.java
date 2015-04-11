@@ -1,4 +1,7 @@
-
+//Message from Cameron:
+//I have modified the code in this file so that the player can now
+//choose to quit following a game.  This is so the program will work with
+//EclEmma.
 package connect.four.player;
 import connect.four.board.ReadableBoard;
 import connect.four.board.ReadWritableBoard;
@@ -28,6 +31,28 @@ public class ConsolePlayer implements Player, ScoreChart.Listener {
         System.out.println(m_name + (winner == this ? " won." : " lost."));
         dumpBoard(board);
         System.out.println(m_name + ": " + scores.getScore(this));
+        
+//------TODO TEMPORARY quit game code, added by Cameron Bartee:
+        System.out.println();
+        System.out.println("Would you like to play again?");
+        System.out.println("(Enter 0 for quit and 1 for play again)");
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        int x = -1;
+        while (x < 0 || x > 1) {
+            try {
+                System.out.print("Enter your selection: ");
+                x = Integer.parseInt(stdin.readLine());
+            } catch (IOException e) {
+                // loop again.
+            } catch (NumberFormatException e) {
+                // loop again.
+            }
+        }
+        if(x == 0)
+            System.exit(0);
+        else
+        	System.out.println("Playing again!");
+//------End of TODO TEMPORARY quit game code
     }
 
     @Override public void performPlay(ReadWritableBoard board) {
