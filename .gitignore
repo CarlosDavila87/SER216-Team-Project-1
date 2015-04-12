@@ -3,6 +3,7 @@
 /ConnectFourGame/nbproject/genfiles.properties
 /build/
 /dist/
-/ConnectFourGame/bin/
+/ConnectFourGame/bin/**
 /ConnectFourGame/Images/
 /.metadata/
+**/bin
