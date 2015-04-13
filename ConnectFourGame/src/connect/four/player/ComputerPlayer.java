@@ -23,7 +23,7 @@ public class ComputerPlayer implements Player {
 
     @Override public void performPlay(ReadWritableBoard board) {
         int l = board.getWidth();
-	int m = board.getHeight();
+        int m = board.getHeight();
         if (board.getMoveCount() == 0) {
             board.play((new Random()).nextInt(l), this);
         } else {
@@ -63,8 +63,8 @@ public class ComputerPlayer implements Player {
                 Board nextMove = new Board(myMove);
                 nextMove.play(i, opponent);
                 if (Game.detectWinner(nextMove, 4) == opponent) {
-		    score -= Math.pow(l, depth-1);
-		} else {
+                	score -= Math.pow(l, depth-1);
+                } else {
                     for (int j = 0; j != l; ++j) {
                         score += scoreMove(j, depth - 2, nextMove, opponent);
                     }
