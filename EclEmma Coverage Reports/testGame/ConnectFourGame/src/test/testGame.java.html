@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>testGame.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">testGame (Apr 13, 2015 4:53:57 PM)</a> &gt; <a href="../../index.html" class="el_group">ConnectFourGame</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">test</a> &gt; <span class="el_source">testGame.java</span></div><h1>testGame.java</h1><pre class="source lang-java linenums">package test;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import connect.four.Game;
+import connect.four.board.*;
+import connect.four.player.*;
+
+<span class="fc" id="L11">public class testGame {</span>
+
+	@Test
+	public void testDetectWinner() {
+		
+<span class="fc" id="L16">		int inRow = 4;</span>
+		
+<span class="fc" id="L18">		ConsolePlayer symX = new ConsolePlayer(&quot;X&quot;);</span>
+<span class="fc" id="L19">		ConsolePlayer symO = new ConsolePlayer(&quot;O&quot;);</span>
+		
+<span class="fc" id="L21">		ConsolePlayer[][] board1Config = {{ null, null, null, null, null, null, null },</span>
+<span class="fc" id="L22">										  { null, null, null, null, null, null, null },</span>
+<span class="fc" id="L23">										  { null, null, null, symO, null, null, null },</span>
+<span class="fc" id="L24">										  { null, symO, symO, symO, null, null, null },</span>
+<span class="fc" id="L25">										  { null, symO, symX, symX, null, null, null },</span>
+<span class="fc" id="L26">										  { symO, symO, symX, symO, null, null, null }};</span>
+		
+<span class="fc" id="L28">		ConsolePlayer[][] board2Config = {{ null, null, null, null, null, null, null },</span>
+<span class="fc" id="L29">										  { null, null, null, null, null, null, null },</span>
+<span class="fc" id="L30">										  { null, null, null, symO, null, null, null },</span>
+<span class="fc" id="L31">										  { null, symO, symO, symO, null, null, null },</span>
+<span class="fc" id="L32">										  { null, symX, symX, symX, null, null, null },</span>
+<span class="fc" id="L33">										  { symO, symO, symO, symO, null, null, null }};</span>
+		
+<span class="fc" id="L35">		ConsolePlayer[][] board3Config = {{ null, null, null, null, null, null, null },</span>
+<span class="fc" id="L36">										  { null, null, null, null, null, null, null },</span>
+<span class="fc" id="L37">										  { symO, null, null, null, null, null, null },</span>
+<span class="fc" id="L38">										  { symX, symO, symO, symO, null, null, null },</span>
+<span class="fc" id="L39">										  { symX, symX, symO, symX, null, null, null },</span>
+<span class="fc" id="L40">										  { symX, symX, symX, symO, null, null, null }};</span>
+		
+<span class="fc" id="L42">		ConsolePlayer[][] board4Config = {{ null, null, null, null, null, null, null },</span>
+<span class="fc" id="L43">										  { null, null, null, null, null, null, null },</span>
+<span class="fc" id="L44">										  { null, null, null, symO, symX, null, null },</span>
+<span class="fc" id="L45">										  { null, null, null, symO, symX, null, null },</span>
+<span class="fc" id="L46">										  { symX, null, null, symO, symX, symO, null },</span>
+<span class="fc" id="L47">										  { symX, null, null, symX, symX, symO, symO }};</span>
+		
+<span class="fc" id="L49">		ConsolePlayer[][] board5Config = {{ null, null, null, null, symX, null, symX },</span>
+<span class="fc" id="L50">										  { null, null, null, null, symO, null, symO },</span>
+<span class="fc" id="L51">										  { null, null, symX, null, symO, null, symO },</span>
+<span class="fc" id="L52">										  { null, symX, symO, null, symX, symX, symO },</span>
+<span class="fc" id="L53">										  { symX, symX, symX, symO, symO, symO, symX },</span>
+<span class="fc" id="L54">										  { symX, symX, symO, symX, symX, symO, symO }};</span>
+		
+<span class="fc" id="L56">		ConsolePlayer[][] board6Config = {{ null, null, null, null, null, null, null },</span>
+<span class="fc" id="L57">										  { null, null, null, null, null, null, null },</span>
+<span class="fc" id="L58">										  { null, null, null, null, null, null, null },</span>
+<span class="fc" id="L59">										  { null, null, null, null, null, null, null },</span>
+<span class="fc" id="L60">										  { null, null, null, null, null, null, null },</span>
+<span class="fc" id="L61">										  { null, null, null, null, null, null, null }};</span>
+
+<span class="fc" id="L63">		Board board1 = new Board(board1Config);</span>
+<span class="fc" id="L64">		Board board2 = new Board(board2Config);</span>
+<span class="fc" id="L65">		Board board3 = new Board(board3Config);</span>
+<span class="fc" id="L66">		Board board4 = new Board(board4Config);</span>
+<span class="fc" id="L67">		Board board5 = new Board(board5Config);</span>
+<span class="fc" id="L68">		Board board6 = new Board(board6Config);</span>
+		
+		//Boards with winners:
+<span class="fc" id="L71">		assertEquals(symO, Game.detectWinner(board1, inRow));</span>
+<span class="fc" id="L72">		assertEquals(symO, Game.detectWinner(board2, inRow));</span>
+<span class="fc" id="L73">		assertEquals(symO, Game.detectWinner(board3, inRow));</span>
+<span class="fc" id="L74">		assertEquals(symX, Game.detectWinner(board4, inRow));</span>
+		
+		//Boards with no winners:
+<span class="fc" id="L77">		assertNull(Game.detectWinner(board5, inRow));</span>
+<span class="fc" id="L78">		assertNull(Game.detectWinner(board6, inRow));</span>
+<span class="fc" id="L79">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>testGame (Apr 13, 2015 4:53:57 PM)</div></body></html>

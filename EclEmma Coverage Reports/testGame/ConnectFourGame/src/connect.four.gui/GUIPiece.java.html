@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>GUIPiece.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">testGame (Apr 13, 2015 4:53:57 PM)</a> &gt; <a href="../../index.html" class="el_group">ConnectFourGame</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">connect.four.gui</a> &gt; <span class="el_source">GUIPiece.java</span></div><h1>GUIPiece.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package connect.four.gui;
+
+import static connect.four.gui.GamePanel.PLAY_TIME;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
+
+
+public class GUIPiece extends JLabel{
+	
+	int glowNum;
+	ImageIcon glow1;
+	ImageIcon glow2;
+	ImageIcon glow3;
+	ImageIcon glow4;
+	ImageIcon[] glowing;
+	
+<span class="nc" id="L24">	public GUIPiece(int playerNum){</span>
+<span class="nc" id="L25">		setSize(145,145);</span>
+<span class="nc" id="L26">		setOpaque(false);</span>
+<span class="nc" id="L27">		setText(&quot;&quot;);</span>
+<span class="nc" id="L28">		ImageIcon redIcon = new ImageIcon(getClass().getResource(&quot;/red_glow/glow1.png&quot;));</span>
+<span class="nc" id="L29">		ImageIcon blueIcon = new ImageIcon(getClass().getResource(&quot;/blue_glow/glow1.png&quot;));</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">		if(playerNum == 0){</span>
+<span class="nc" id="L31">			setIcon(redIcon);</span>
+<span class="nc" id="L32">			glowNum = 0;</span>
+<span class="nc" id="L33">			glow1 = new ImageIcon(getClass().getResource(&quot;/red_glow/glow1.png&quot;));</span>
+<span class="nc" id="L34">			glow2 = new ImageIcon(getClass().getResource(&quot;/red_glow/glow2.png&quot;));</span>
+<span class="nc" id="L35">			glow3 = new ImageIcon(getClass().getResource(&quot;/red_glow/glow3.png&quot;));</span>
+<span class="nc" id="L36">			glow4 = new ImageIcon(getClass().getResource(&quot;/red_glow/glow4.png&quot;));</span>
+<span class="nc" id="L37">		}</span>
+		else{
+<span class="nc" id="L39">			setIcon(blueIcon);</span>
+<span class="nc" id="L40">			glowNum = 1;</span>
+<span class="nc" id="L41">			glow1 = new ImageIcon(getClass().getResource(&quot;/blue_glow/glow1.png&quot;));</span>
+<span class="nc" id="L42">			glow2 = new ImageIcon(getClass().getResource(&quot;/blue_glow/glow2.png&quot;));</span>
+<span class="nc" id="L43">			glow3 = new ImageIcon(getClass().getResource(&quot;/blue_glow/glow3.png&quot;));</span>
+<span class="nc" id="L44">			glow4 = new ImageIcon(getClass().getResource(&quot;/blue_glow/glow4.png&quot;));</span>
+		}
+		
+<span class="nc" id="L47">		glowing = new ImageIcon[] {glow1, glow2, glow3, glow4, glow3, glow2};</span>
+<span class="nc" id="L48">		revalidate();</span>
+<span class="nc" id="L49">		repaint();</span>
+<span class="nc" id="L50">		setVisible(true);</span>
+<span class="nc" id="L51">	}</span>
+	
+	ImageIcon getGlow(int index){
+<span class="nc" id="L54">		return glowing[index];</span>
+	}
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>testGame (Apr 13, 2015 4:53:57 PM)</div></body></html>

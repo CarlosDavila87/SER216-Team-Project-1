@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>ConsolePlayer.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">testGame (Apr 13, 2015 4:53:57 PM)</a> &gt; <a href="../../index.html" class="el_group">ConnectFourGame</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">connect.four.player</a> &gt; <span class="el_source">ConsolePlayer.java</span></div><h1>ConsolePlayer.java</h1><pre class="source lang-java linenums">//Message from Cameron:
+//I have modified the code in this file so that the player can now
+//choose to quit following a game.  This is so the program will work with
+//EclEmma.
+package connect.four.player;
+import connect.four.board.ReadableBoard;
+import connect.four.board.ReadWritableBoard;
+import connect.four.Game;
+import connect.four.ScoreChart;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+
+
+public class ConsolePlayer implements Player, ScoreChart.Listener {
+    String m_name;
+
+<span class="fc" id="L18">    public ConsolePlayer(String name) {</span>
+<span class="fc" id="L19">        m_name = name;</span>
+<span class="fc" id="L20">    }</span>
+
+    @Override public String getName() {
+<span class="nc" id="L23">        return m_name;</span>
+    }
+    
+    public void setName(String m_name){
+<span class="nc" id="L27">            this.m_name = m_name;</span>
+<span class="nc" id="L28">    }</span>
+
+    @Override public void gameOver(Player winner, ScoreChart scores, ReadableBoard board) {
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        System.out.println(m_name + (winner == this ? &quot; won.&quot; : &quot; lost.&quot;));</span>
+<span class="nc" id="L32">        dumpBoard(board);</span>
+<span class="nc" id="L33">        System.out.println(m_name + &quot;: &quot; + scores.getScore(this));</span>
+        
+//------TODO TEMPORARY quit game code, added by Cameron Bartee:
+<span class="nc" id="L36">        System.out.println();</span>
+<span class="nc" id="L37">        System.out.println(&quot;Would you like to play again?&quot;);</span>
+<span class="nc" id="L38">        System.out.println(&quot;(Enter 0 for quit and 1 for play again)&quot;);</span>
+<span class="nc" id="L39">        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));</span>
+<span class="nc" id="L40">        int x = -1;</span>
+<span class="nc bnc" id="L41" title="All 4 branches missed.">        while (x &lt; 0 || x &gt; 1) {</span>
+            try {
+<span class="nc" id="L43">                System.out.print(&quot;Enter your selection: &quot;);</span>
+<span class="nc" id="L44">                x = Integer.parseInt(stdin.readLine());</span>
+<span class="nc" id="L45">            } catch (IOException e) {</span>
+                // loop again.
+<span class="nc" id="L47">            } catch (NumberFormatException e) {</span>
+                // loop again.
+            }
+        }
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if(x == 0)</span>
+<span class="nc" id="L52">            System.exit(0);</span>
+        else
+<span class="nc" id="L54">        	System.out.println(&quot;Playing again!&quot;);</span>
+//------End of TODO TEMPORARY quit game code
+<span class="nc" id="L56">    }</span>
+
+    @Override public void performPlay(ReadWritableBoard board) {
+<span class="nc" id="L59">        int width = board.getWidth();</span>
+<span class="nc" id="L60">        int height = board.getHeight();</span>
+
+<span class="nc" id="L62">        System.out.println(&quot;\n&quot;+m_name+&quot;'s turn!&quot;);</span>
+<span class="nc" id="L63">        dumpBoard(board);</span>
+
+<span class="nc" id="L65">        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));</span>
+<span class="nc" id="L66">        int x = 0;</span>
+<span class="nc bnc" id="L67" title="All 4 branches missed.">        while (x &lt; 1 || x &gt; width) {</span>
+            try {
+<span class="nc" id="L69">                System.out.print(&quot;Enter the column you want to play in: &quot;);</span>
+<span class="nc" id="L70">                x = Integer.parseInt(stdin.readLine());</span>
+<span class="nc" id="L71">            } catch (IOException e) {</span>
+                // loop again.
+<span class="nc" id="L73">            } catch (NumberFormatException e) {</span>
+                // loop again.
+            }
+        }
+
+<span class="nc" id="L78">        board.play(x-1, this);</span>
+<span class="nc" id="L79">    }</span>
+
+    private void dumpBoard(ReadableBoard board) {
+<span class="nc" id="L82">        int width = board.getWidth();</span>
+<span class="nc" id="L83">        int height = board.getHeight();</span>
+
+<span class="nc" id="L85">        System.out.println(&quot;@ is you, X is the other player, and O is empty.&quot;);</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        for (int i = height-1; i != -1; --i) {</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">            for (int j = 0; j != width; ++j) {</span>
+<span class="nc" id="L88">                Player played = board.whoPlayed(j, i);</span>
+<span class="nc" id="L89">                System.out.print(</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">                    played == this ? &quot;@&quot; :</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">                    played == null ? &quot;O&quot; : &quot;X&quot;</span>
+                );
+            }
+<span class="nc" id="L94">            System.out.println();</span>
+        }
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        for (int i = 0; i != width; ++i) {</span>
+<span class="nc" id="L97">            System.out.print(i+1);</span>
+        }
+<span class="nc" id="L99">        System.out.println();</span>
+<span class="nc" id="L100">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>testGame (Apr 13, 2015 4:53:57 PM)</div></body></html>
