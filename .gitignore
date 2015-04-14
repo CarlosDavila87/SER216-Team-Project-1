@@ -1,0 +1,10 @@
+/ConnectFourGame/nbproject/private/
+/ConnectFourGame/nbproject/build-impl.xml
+/ConnectFourGame/nbproject/genfiles.properties
+/build/
+/dist/
+/ConnectFourGame/bin/**
+/ConnectFourGame/Images/
+/.metadata/
+**/bin
+/.recommenders/

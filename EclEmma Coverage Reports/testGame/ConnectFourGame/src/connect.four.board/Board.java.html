@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>Board.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">testGame (Apr 13, 2015 4:53:57 PM)</a> &gt; <a href="../../index.html" class="el_group">ConnectFourGame</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">connect.four.board</a> &gt; <span class="el_source">Board.java</span></div><h1>Board.java</h1><pre class="source lang-java linenums">
+package connect.four.board;
+
+import connect.four.player.Player;
+import java.util.Arrays;
+
+public class Board implements ReadWritableBoard {
+    
+	Player[][] m_contents;
+    int m_moveCount;
+    
+<span class="nc" id="L12">    public Board(int width, int height) {</span>
+<span class="nc" id="L13">        m_contents = new Player[width][height];</span>
+<span class="nc" id="L14">        m_moveCount = 0;</span>
+<span class="nc" id="L15">    }</span>
+    
+//--Constructor added for testing purposes by Cameron Bartee------//
+<span class="fc" id="L18">    public Board(Player[][] contents) {</span>
+        
+<span class="fc" id="L20">    	m_contents = new Player[contents.length][contents[0].length];</span>
+        
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        for(int i = 0; i &lt; contents.length; i++){</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        	for(int j = 0; j &lt; contents[i].length; j++){</span>
+<span class="fc" id="L24">        		m_contents[i][j] = contents[i][j];</span>
+        	}
+        }
+        
+<span class="fc" id="L28">        m_moveCount = 0;</span>
+<span class="fc" id="L29">    }</span>
+//--End constructor added for testing purposes by Cameron Bartee--//
+
+<span class="nc" id="L32">    public Board(ReadableBoard copy) {</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        if (copy instanceof Board) {</span>
+<span class="nc" id="L34">            Board copyB = (Board) copy;</span>
+<span class="nc" id="L35">            m_moveCount = copyB.m_moveCount;</span>
+<span class="nc" id="L36">            int l = copyB.m_contents.length;</span>
+<span class="nc" id="L37">            int m = copyB.m_contents[0].length;</span>
+<span class="nc" id="L38">            m_contents = new Player[l][m];</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">            for (int i = 0; i != l; ++i) {</span>
+<span class="nc" id="L40">                m_contents[i] = Arrays.copyOf(copyB.m_contents[i], m);</span>
+            }
+<span class="nc" id="L42">        } else {</span>
+<span class="nc" id="L43">            int l = copy.getWidth();</span>
+<span class="nc" id="L44">            int m = copy.getHeight();</span>
+<span class="nc" id="L45">            m_contents = new Player[l][m];</span>
+<span class="nc" id="L46">            m_moveCount = copy.getMoveCount();</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">            for (int i = 0; i != l; ++i) {</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">                for (int j = 0; j != m; ++j) {</span>
+<span class="nc" id="L49">                    m_contents[i][j] = copy.whoPlayed(i, j);</span>
+                }
+            }
+        }
+<span class="nc" id="L53">    }</span>
+    
+    public @Override Player whoPlayed(int x, int y) {
+<span class="fc" id="L56">        return m_contents[x][y];</span>
+    }
+    
+    public @Override int getWidth() {
+<span class="fc" id="L60">        return m_contents.length;</span>
+    }
+    
+    public @Override int getHeight() {
+<span class="fc" id="L64">        return m_contents[0].length;</span>
+    }
+    
+    public @Override void play(int x, Player p) {
+<span class="nc" id="L68">        int y = getColumnHeight(x);</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (y == m_contents[x].length) {</span>
+<span class="nc" id="L70">            throw new ColumnFullException();</span>
+        }
+<span class="nc" id="L72">        m_contents[x][y] = p;</span>
+<span class="nc" id="L73">        m_moveCount += 1;</span>
+<span class="nc" id="L74">    }</span>
+    
+    public @Override int getColumnHeight(int x){
+<span class="nc" id="L77">        int y = 0;</span>
+<span class="nc" id="L78">        int l = m_contents[0].length;</span>
+<span class="nc bnc" id="L79" title="All 4 branches missed.">        while (y != l &amp;&amp; m_contents[x][y] != null) {</span>
+<span class="nc" id="L80">            y += 1;</span>
+        }
+<span class="nc" id="L82">        return y;</span>
+    }
+    
+    public @Override void clear() {
+<span class="nc" id="L86">        int l = m_contents.length;</span>
+<span class="nc" id="L87">        int m = m_contents[0].length;</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        for (int i = 0; i != l; ++i) {</span>
+<span class="nc" id="L89">            m_contents[i] = new Player[m];</span>
+        }
+<span class="nc" id="L91">	m_moveCount = 0;</span>
+<span class="nc" id="L92">    }</span>
+    
+    public @Override int getMoveCount() {
+<span class="nc" id="L95">        return m_moveCount;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>testGame (Apr 13, 2015 4:53:57 PM)</div></body></html>

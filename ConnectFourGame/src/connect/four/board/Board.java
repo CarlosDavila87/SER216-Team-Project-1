@@ -14,6 +14,21 @@ public class Board implements ReadWritableBoard {
         m_moveCount = 0;
     }
     
+//--Constructor added for testing purposes by Cameron Bartee------//
+    public Board(Player[][] contents) {
+        
+    	m_contents = new Player[contents.length][contents[0].length];
+        
+        for(int i = 0; i < contents.length; i++){
+        	for(int j = 0; j < contents[i].length; j++){
+        		m_contents[i][j] = contents[i][j];
+        	}
+        }
+        
+        m_moveCount = 0;
+    }
+//--End constructor added for testing purposes by Cameron Bartee--//
+
     public Board(ReadableBoard copy) {
         if (copy instanceof Board) {
             Board copyB = (Board) copy;

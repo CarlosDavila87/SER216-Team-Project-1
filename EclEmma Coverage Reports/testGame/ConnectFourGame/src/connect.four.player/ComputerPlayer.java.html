@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>ComputerPlayer.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">testGame (Apr 13, 2015 4:53:57 PM)</a> &gt; <a href="../../index.html" class="el_group">ConnectFourGame</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">connect.four.player</a> &gt; <span class="el_source">ComputerPlayer.java</span></div><h1>ComputerPlayer.java</h1><pre class="source lang-java linenums">
+package connect.four.player;
+
+import connect.four.board.Board;
+import connect.four.board.ReadableBoard;
+import connect.four.board.ReadWritableBoard;
+import connect.four.Game;
+import java.util.Arrays;
+import java.util.Random;
+
+
+public class ComputerPlayer implements Player {
+    int m_depth;
+<span class="nc" id="L14">    public ComputerPlayer() {</span>
+<span class="nc" id="L15">        m_depth = 6;</span>
+<span class="nc" id="L16">    }</span>
+<span class="nc" id="L17">    public ComputerPlayer(int depth) {</span>
+<span class="nc" id="L18">        m_depth = depth;</span>
+<span class="nc" id="L19">    }</span>
+    @Override public String getName() {
+<span class="nc" id="L21">        return &quot;Computer&quot;;</span>
+    }
+
+    @Override public void performPlay(ReadWritableBoard board) {
+<span class="nc" id="L25">        int l = board.getWidth();</span>
+<span class="nc" id="L26">        int m = board.getHeight();</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        if (board.getMoveCount() == 0) {</span>
+<span class="nc" id="L28">            board.play((new Random()).nextInt(l), this);</span>
+<span class="nc" id="L29">        } else {</span>
+<span class="nc" id="L30">            Player opponent = getOpponent(board);</span>
+<span class="nc" id="L31">            int maxMove = (new Random()).nextInt(l);</span>
+<span class="nc" id="L32">            long maxScore = scoreMove(maxMove, m_depth, board, opponent);</span>
+<span class="nc" id="L33">            long[] scores = new long[l];</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">            for (int i = 0; i != l; ++i) {</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">                if (board.whoPlayed(i, m-1) != null) continue;</span>
+<span class="nc" id="L36">                long iScore = scoreMove(i, m_depth, board, opponent);</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">                if (iScore &gt; maxScore) {</span>
+<span class="nc" id="L38">                    maxMove = i;</span>
+<span class="nc" id="L39">                    maxScore = iScore;</span>
+                }
+<span class="nc" id="L41">                scores[i] = iScore;</span>
+            }
+<span class="nc bnc" id="L43" title="All 2 branches missed.">	    while (board.whoPlayed(maxMove, m-1) != null) {</span>
+<span class="nc" id="L44">                maxMove = (maxMove+1)%l;</span>
+	    }
+<span class="nc" id="L46">            System.out.println(Arrays.toString(scores));</span>
+<span class="nc" id="L47">            board.play(maxMove, this);</span>
+        }
+<span class="nc" id="L49">    }</span>
+
+    private long scoreMove(int x, int depth, ReadableBoard board, Player opponent) {
+<span class="nc" id="L52">        int m = board.getHeight();</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (board.whoPlayed(x, m-1) != null) return 0;</span>
+<span class="nc" id="L54">        Board myMove = new Board(board);</span>
+<span class="nc" id="L55">        myMove.play(x, this);</span>
+<span class="nc" id="L56">        int l = myMove.getWidth();</span>
+<span class="nc" id="L57">        long score = 0;</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (Game.detectWinner(myMove, 4) == this) {</span>
+<span class="nc" id="L59">            score += Math.pow(l, depth);</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        } else if (depth != 0) {</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">            for (int i = 0; i != l; ++i) {</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">                if (myMove.whoPlayed(i, m-1) != null) continue;</span>
+<span class="nc" id="L63">                Board nextMove = new Board(myMove);</span>
+<span class="nc" id="L64">                nextMove.play(i, opponent);</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">                if (Game.detectWinner(nextMove, 4) == opponent) {</span>
+<span class="nc" id="L66">                	score -= Math.pow(l, depth-1);</span>
+<span class="nc" id="L67">                } else {</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">                    for (int j = 0; j != l; ++j) {</span>
+<span class="nc" id="L69">                        score += scoreMove(j, depth - 2, nextMove, opponent);</span>
+                    }
+                }
+            }
+        }
+<span class="nc" id="L74">        return score;</span>
+    }
+
+    private Player getOpponent(ReadableBoard board) {
+<span class="nc" id="L78">        int l = board.getWidth();</span>
+<span class="nc" id="L79">        int m = board.getHeight();</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        for (int i = 0; i != l; ++i) {</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">            for (int j = 0; j != m; ++j) {</span>
+<span class="nc" id="L82">                Player here = board.whoPlayed(i, j);</span>
+<span class="nc bnc" id="L83" title="All 4 branches missed.">                if (here != null &amp;&amp; here != this) {</span>
+<span class="nc" id="L84">                    return here;</span>
+                }
+            }
+        }
+<span class="nc" id="L88">        throw new Error(&quot;Can't call getOpponent on first turn.&quot;);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span>testGame (Apr 13, 2015 4:53:57 PM)</div></body></html>
