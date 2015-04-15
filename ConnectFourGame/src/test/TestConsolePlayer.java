@@ -109,7 +109,7 @@ public class TestConsolePlayer {
 			fail("Something went wrong; I don't know what.");
 		}
 		
-		//dumpBoard is private, so we must make it accessable:
+		//dumpBoard is private, so we must make it accessible:
 		dumpBoard.setAccessible(true);
 		
 		//Perform the tests:
