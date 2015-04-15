@@ -17,11 +17,11 @@ public class TestBoard {
 		ConsolePlayer xian = new ConsolePlayer("Xian");
 		
 		//Setup the two board configurations:
-		ConsolePlayer[][] board1Config = {{ null, null, null, null, null, xian }, //1
-										  { null, null, null, null, xian, adam }, //2
+		ConsolePlayer[][] board1Config = {{ xian, null, null, null, null, null }, //1
+										  { adam, xian, null, null, null, null }, //2
 										  { null, null, null, null, null, null }, //3
 							/*Bottom*/    { null, null, null, null, null, null }, //4  /*Top*/
-										  { null, null, null, null, xian, adam }, //5
+										  { adam, xian, null, null, null, null }, //5
 										  { null, null, null, null, null, null }, //6
 										  { adam, xian, adam, adam, xian, adam }};//7
 				
@@ -33,13 +33,13 @@ public class TestBoard {
 										  { null, null, null, null, null, null }, //6
 										  { null, null, null, null, null, null }};//7
 		
-		//Create the two boards to be copied with the two board configurations
+		//Create the two boards to be copied with the two board configurations:
 		Board board1 = new Board(board1Config);
 		Board board2 = new Board(board2Config);
 		
 		//Attempt to create copies of the two boards:
-		Board board1copy = new Board(board1);
-		Board board2copy = new Board(board2);
+		Board board1copy = new Board(board1);//Test ID# UI-BB-1
+		Board board2copy = new Board(board2);//Test ID# UI-BB-2
 		
 		//Check to make sure the copy of board1 has the same dimensions:
 		if(board1.getWidth() != board1copy.getWidth())
