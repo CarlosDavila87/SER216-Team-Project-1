@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import connect.four.Game;
 import connect.four.board.*;
-import connect.four.player.*;
+import connect.four.player.*;					
 
 public class testGame {
 
