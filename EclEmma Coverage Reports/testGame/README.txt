@@ -1,1 +1,0 @@
-This particular test run was intended to test only the detectWinner() method in class Game - note the 100% coverage of method detectWinner().
