@@ -3,10 +3,12 @@
 //choose to quit following a game.  This is so the program will work with
 //EclEmma.
 package connect.four.player;
+import connect.four.board.ColumnFullException;
 import connect.four.board.ReadableBoard;
 import connect.four.board.ReadWritableBoard;
 import connect.four.Game;
 import connect.four.ScoreChart;
+
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,23 +36,36 @@ public class ConsolePlayer implements Player, ScoreChart.Listener {
     }
 
     @Override public void performPlay(ReadWritableBoard board) {
-        int width = board.getWidth();
-        int height = board.getHeight();
-
+        
+    	int width = board.getWidth();
         BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
         int x = 0;
-        while (x < 1 || x > width) {
-            try {
-                System.out.print("Enter the column you want to play in: ");
-                x = Integer.parseInt(stdin.readLine());
-            } catch (IOException e) {
-                // loop again.
-            } catch (NumberFormatException e) {
-                // loop again.
-            }
+        boolean done = false;
+        
+        //Begin code modified by Group 6:
+        while(!done){
+	        try {
+		        while (x < 1 || x > width) {
+		            try {
+		                System.out.print("Enter the column you want to play in: ");
+		                x = Integer.parseInt(stdin.readLine());
+		            } catch (IOException e) {
+		                // loop again.
+		            } catch (NumberFormatException e) {
+		                // loop again.
+		            }
+		        }
+		        
+		        board.play(x-1, this);
+		        done = true;
+	        }
+	        catch(ColumnFullException ex){
+	        	System.out.println("That column is full, choose another.");
+	        	x = 0;
+	        	//loop again.
+	        }
         }
-
-        board.play(x-1, this);
+        //End code modified by Group 6
     }
 
     private void dumpBoard(ReadableBoard board) {

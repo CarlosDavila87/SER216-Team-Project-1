@@ -62,17 +62,11 @@ public class Game implements ScoreChart {
         m_currentPlayer = player;
         ReadWritableBoard controlledBoard = new ReadWritableBoard() {
             
-        	boolean played;
-            
             @Override public Player whoPlayed(int x, int y) {
                 return m_board.whoPlayed(x, y);
             }
             
             @Override public void play(int x, Player p) {
-                if (played) {
-                    throw new Error(p+" Played more than once in a turn.");
-                }
-                played = true;
                 m_board.play(x, p);
                 Player win = detectWinner(m_board, m_inRow);
                 if (win != null) {
