@@ -2,8 +2,13 @@
 package connect.four;
 
 import connect.four.player.Player;
+import connect.four.player.ConsolePlayer;
 import connect.four.board.ReadableBoard;
 import connect.four.board.ReadWritableBoard;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -72,16 +77,28 @@ public class Game implements ScoreChart {
                 Player win = detectWinner(m_board, m_inRow);
                 if (win != null) {
                     m_scores[player] += 1;
-                    for (ScoreChart.Listener l : m_listeners) {
-                        l.gameOver(win, Game.this, m_board);
-                    }
+                    //Begin code modified by Group 6:
+                    clearScreen();
+                    System.out.println(win.getName() + " Won!!!");
+                    printPlayerPieceAssociations();
+                    System.out.println("Final board state:");
+                    printBoard(m_board);
+                    printScores();
+                    //End code modified by Group 6
                     m_board.clear();
+                    playAgainPrompt();//code modified by Group 6
                     performPlay(player);
                 } else if (m_board.getMoveCount() == m_board.getWidth()*m_board.getHeight() ) {
-                    for (ScoreChart.Listener l : m_listeners) {
-                        l.gameOver(null, Game.this, m_board);
-                    }
+                	//Begin code modified by Group 6:
+                	clearScreen();
+                	System.out.println("Draw! Nobody wins.");
+                	printPlayerPieceAssociations();
+                	System.out.println("Final board state:");
+                    printBoard(m_board);
+                    printScores();
+                    //End code modified by Group 6
                     m_board.clear();
+                    playAgainPrompt();//code modified by Group 6
                     performPlay((player+1) % m_players.length);
                 } else {
                     performPlay((player+1) % m_players.length);
@@ -107,6 +124,13 @@ public class Game implements ScoreChart {
 		    	return m_board.getMoveCount();
 		    }
         };
+        //Begin code modified by Group 6:
+        clearScreen();
+        printPlayerPieceAssociations();
+        System.out.println(m_players[player].getName() + "'s turn!");
+        System.out.println();
+        printBoard(m_board);
+        //End code modified by Group 6
         m_players[player].performPlay(controlledBoard);
     }
     
@@ -192,5 +216,83 @@ public class Game implements ScoreChart {
 	    }
 	}
         return null;
+    }
+    
+    //Private helper method to prompt the player(s) and ask them
+    //if they want to play again. Added by Group 6.
+    private void playAgainPrompt(){
+    	System.out.println();
+        System.out.println("Would you like to play again?");
+        System.out.println("(Enter 0 for quit and 1 for play again)");
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        int x = -1;
+        while (x < 0 || x > 1) {
+            try {
+                System.out.print("Enter your selection: ");
+                x = Integer.parseInt(stdin.readLine());
+            } catch (IOException e) {
+                // loop again.
+            } catch (NumberFormatException e) {
+                // loop again.
+            }
+        }
+        if(x == 0)
+            System.exit(0);
+        else
+        	System.out.println("Playing again!");
+    }
+    
+    //Private helper method to print the board.
+    //Taken from class ConsolePlayer (where it is called dumpBoard),
+    //slightly modified.
+    //Added by Group 6.
+    private void printBoard(ReadableBoard board) {
+        int width = board.getWidth();
+        int height = board.getHeight();
+
+        for (int i = height-1; i != -1; --i) {
+            for (int j = 0; j != width; ++j) {
+                Player played = board.whoPlayed(j, i);
+                System.out.print(
+                    played == m_players[0] ? "@ " :
+                    played == null ? "O " : "X "
+                );
+            }
+            System.out.println();
+        }
+        for (int i = 0; i != width-1; ++i) {
+            System.out.print("--");
+        }
+        System.out.print("-");
+        System.out.println();
+        for (int i = 0; i != width; ++i) {
+            System.out.print(i+1 + " ");
+        }
+        System.out.println();
+    }
+    
+    //Private helper method to print the scores.
+    //Added by Group 6.
+    private void printScores(){
+    	System.out.println("Scores:");
+        System.out.println(m_players[0].getName() + ": " + getScore(m_players[0]));
+        System.out.println(m_players[1].getName() + ": " + getScore(m_players[1]));
+    }
+    
+    //Private helper method to clear the screen
+    //by printing many newlines.
+    //Added by Group 6.
+    private void clearScreen(){
+    	for(int i = 0; i < 50; i++)
+    		System.out.println();
+    }
+    
+    //Private helper method to print which pieces
+    //belong to which players.
+    //Added by Group 6.
+    private void printPlayerPieceAssociations() {
+        System.out.println(m_players[0].getName() + ": @");
+    	System.out.println(m_players[1].getName() + ": X");
+    	System.out.println();
     }
 }
